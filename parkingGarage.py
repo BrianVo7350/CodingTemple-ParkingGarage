@@ -30,8 +30,53 @@
 tickets = [0,1,2,3,4,5,6,7,8,9]
 
 class Garage():
-    def __init__(self):
-        self.TotalSpaces = 10
-        
+    def __init__(self,total_spaces:int):
+        self.total_spaces = total_spaces
+        self.open_spots = total_spaces
+        self.visitors = dict()
+        self.tickets = list()
+
+    def currentVisitors(self):
+        for visitor in self.visitors.items():
+            print(visitor[0],visitor[1])
+        return
     
-    pass
+    def takeTicket(self,visitor:str,show_text:bool=True):
+        if self.open_spots == 0:
+            print(f"Sorry {visitor}, no parking space-available")
+            return
+        
+        if not isinstance(visitor,str) or not visitor:
+            print("Visitor's name must be a non-empty string")
+            return
+        
+        visitor = visitor.strip().lower()
+
+        if visitor in self.visitors:
+            print("Sorry, someone is already in here with that name, so we can't let you in. If you must come in, please use a nickname or add numbers to your name")
+            return
+        
+        self.visitors[visitor] = "NotPaid"
+        self.open_spots -= 1
+        if show_text:
+            print(f"Welcome to the garage {visitor}, enjoy your time!")
+            print("Make sure to pay for your ticket with '.payTicket()' before you leave")
+        return
+
+
+
+
+        
+
+
+
+    
+
+my_garage = Garage(2)
+my_garage.takeTicket("tommy",False)
+my_garage.currentVisitors()
+my_garage.takeTicket("mark",False)
+my_garage.currentVisitors()
+my_garage.takeTicket("jess",False)
+my_garage.currentVisitors()
+
