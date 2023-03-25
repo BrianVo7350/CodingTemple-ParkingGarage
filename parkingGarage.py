@@ -37,8 +37,8 @@ class Garage():
         self.tickets = list()
 
     def currentVisitors(self):
-        for visitor in self.visitors.items():
-            print(visitor[0],visitor[1])
+        for visitor, payment_status in self.visitors.items():
+            print(visitor, payment_status)
         return
     
     def takeTicket(self,visitor:str,show_text:bool=True):
@@ -81,16 +81,40 @@ class Garage():
             print('Please type $5 to pay your ticket!')
             pay = input().strip()
             if pay != "$5":
-                print("Please enter $5 to pay your ticket.")
+                print("You have entered the incorrect amount.")
                 continue
+            print("Thank you for the payment! Leave garage with '.leaveGarage()' ")
+            break
+        
+        self.visitors[visitor] = True
+        return
 
+    def leaveGarage(self, visitor:str):
+        if not isinstance(visitor,str) or not visitor:
+            print("Visitor's name must be a non-empty string")
+            return
+        
+        visitor = visitor.strip().lower()
+        if visitor not in self.visitors:
+            print("You never got a ticket how are you trying to leave?")
+            return
 
         
+        if self.visitors[visitor] == False:
+            print("You have not payed yet please pay with '.payTicket()' ")
+            return
+
+
+        print(f"Thank you for visiting our garage {visitor} come again soon!")
         
+        del self.visitors[visitor]
+        self.open_spots += 1
+        return
 
 
-            
-    
+
+
+
             
 
 
@@ -99,10 +123,10 @@ class Garage():
 
 my_garage = Garage(2)
 my_garage.takeTicket("tommy")
-my_garage.takeTicket("Tommy")
-my_garage.takeTicket("jess")
 my_garage.currentVisitors()
-
-#my_garage.payTicket()
-#my_garage.leavegarage()
-
+my_garage.takeTicket("mark")
+my_garage.currentVisitors()
+my_garage.payTicket("mark")
+my_garage.currentVisitors()
+my_garage.leaveGarage("mark")
+my_garage.currentVisitors()
