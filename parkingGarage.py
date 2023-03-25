@@ -56,27 +56,53 @@ class Garage():
             print("Sorry, someone is already in here with that name, so we can't let you in. If you must come in, please use a nickname or add numbers to your name")
             return
         
-        self.visitors[visitor] = "NotPaid"
+        self.visitors[visitor] = False
         self.open_spots -= 1
         if show_text:
             print(f"Welcome to the garage {visitor}, enjoy your time!")
             print("Make sure to pay for your ticket with '.payTicket()' before you leave")
         return
 
+    def payTicket(self, visitor:str):
+        if not isinstance(visitor,str) or not visitor:
+            print("Visitor's name must be a non-empty string")
+            return
 
+        visitor = visitor.strip().lower()
+        if visitor not in self.visitors:
+            print("Hey don't you need to pay! You are not in the garage!")
+            return
+
+        if self.visitors[visitor] == True:
+            print("You have already paid. Feel free to leave whenever!")
+            return
+
+        while True:
+            print('Please type $5 to pay your ticket!')
+            pay = input().strip()
+            if pay != "$5":
+                print("Please enter $5 to pay your ticket.")
+                continue
+
+
+        
+        
+
+
+            
+    
+            
 
 
         
 
 
-
-    
-
 my_garage = Garage(2)
-my_garage.takeTicket("tommy",False)
+my_garage.takeTicket("tommy")
+my_garage.takeTicket("Tommy")
+my_garage.takeTicket("jess")
 my_garage.currentVisitors()
-my_garage.takeTicket("mark",False)
-my_garage.currentVisitors()
-my_garage.takeTicket("jess",False)
-my_garage.currentVisitors()
+
+#my_garage.payTicket()
+#my_garage.leavegarage()
 
