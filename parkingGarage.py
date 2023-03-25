@@ -76,17 +76,34 @@ class Garage():
         if self.visitors[visitor] == True:
             print("You have already paid. Feel free to leave whenever!")
             return
-
+        
+        # times refused to pay
+        times_refused = -1
         while True:
+            times_refused += 1
             print('Please type $5 to pay your ticket!')
             pay = input().strip()
+            if pay == "pay later":
+                print("You have opted to pay later, please come again when ready to make payment")
+                return
+            
             if pay != "$5":
                 print("You have entered the incorrect amount.")
-                continue
+
+                if times_refused >= 1:
+                    print("You clearly can't be reasoned with, if you would like to speak to my manager, enter 'pay later', then call the manager'.callManager()' method")
+                continue    
+            
+            
             print("Thank you for the payment! Leave garage with '.leaveGarage()' ")
             break
         
         self.visitors[visitor] = True
+
+        # Add name to ticket list to store record of their paid ticket
+        ticket_val = 5.0
+        self.tickets.append((visitor,ticket_val)) 
+
         return
 
     def leaveGarage(self, visitor:str):
@@ -110,12 +127,63 @@ class Garage():
         del self.visitors[visitor]
         self.open_spots += 1
         return
+    
+    def moneyMade(self):
+        total = 0
+        for _,val in self.tickets:
+            total += val
+        print(total)
+        return total
+    
+    def callManager(self,visitor:str):
+        # Please explain why ypu have an issue with our pricing scheme.
+        # print(hmmmm)
+        # All other customers pay $5, we would appreciate it if you did to
+        # does that work for you. Please enter "yes" if it does
+        # if it does, do standard pay for ticket
+        print("Ok, please explain why you have an issue with our pricing")
+        issue = input()
+        print("hmmmmmmmmmmmm")
+        print("I hear you, but all other customers pay $5, we would appreciate it if you did to")
+        print("does that work for you. If it does, please enter 'yes'")
+        response = input().strip().lower()
+        ticket_val = 5
+        if response == "yes":
+            print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the '.leaveGarage()' method")
+            self.visitors[visitor] = True
+            self.tickets.append((visitor,ticket_val)) 
+            return
+        while ticket_val > 1:
+            ticket_val -= 1
+            print("Ok, I understand that the price can be considered a lot")
+            print("Please explain why you think the price should be lower")
+            issue = input()
+            print("hmmmmmmmmmmmm")
+            print(f"Ok. What if I made the price ${ticket_val}?")
+            print("Enter 'yes' if you are ok with that price")
+            response = input().strip().lower()
+            if response == "yes":
+                print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the '.leaveGarage()' method")
+                self.visitors[visitor] = True
+                self.tickets.append((visitor,ticket_val)) 
+                return
 
-
-
-
-
+        print("ok, I give up, please just leave")
+        self.visitors[visitor] = True
+        self.tickets.append((visitor,0)) 
+        return
             
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -125,8 +193,7 @@ my_garage = Garage(2)
 my_garage.takeTicket("tommy")
 my_garage.currentVisitors()
 my_garage.takeTicket("mark")
+# my_garage.payTicket('mark')
+my_garage.callManager("mark")
 my_garage.currentVisitors()
-my_garage.payTicket("mark")
-my_garage.currentVisitors()
-my_garage.leaveGarage("mark")
-my_garage.currentVisitors()
+my_garage.moneyMade()
