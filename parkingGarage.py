@@ -14,10 +14,21 @@ class Garage():
         """
         Method to print out the current visitors and their payment status
         """
+        if len(self.visitors) == 0:
+            print("There are no visitors turning off systems.")
+            return
+        length = 7
+        for visitor in self.visitors.keys(): 
+            length = max(length, len(visitor))
+        
+        print("visitors".ljust(length, " ") + "   -   " + "paid ticket")
+        print()
+
         for visitor, payment_status in self.visitors.items():
-            print(visitor, payment_status)
+            x = visitor.ljust(length, " ") + "   -   " + str(payment_status)
+            print(x)
         return
-    
+
     def takeTicket(self,visitor:str,show_text:bool=True):
         """
         Method to add a visitor to the parking garage. One must provide the visitor's name
@@ -168,29 +179,3 @@ class Garage():
         self.visitors[visitor] = True
         self.tickets.append((visitor,0)) 
         return
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-my_garage = Garage(2)
-my_garage.takeTicket("tommy")
-my_garage.currentVisitors()
-my_garage.takeTicket("mark")
-# my_garage.payTicket('mark')
-my_garage.callManager("mark")
-my_garage.currentVisitors()
-my_garage.moneyMade()
-
