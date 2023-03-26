@@ -1,35 +1,9 @@
-
-# # # Brainstorming area
-
-# Assignment
-# https://classroom.google.com/c/NTA4ODEzMzI2MDg2/a/NTA4ODEzMzI2MjQ3/details
-
-# Parking Garage Class
-    # Thing to track
-        # Total Spaces
-        # Occupied Spaces
-        # Cost
-
-    # Things we care about
-    
-    # Functions
-        # Enter Garage
-        
-        # Pay ticket
-        # Only can if ticket has been paid
-        # Print current occupancy
-        # CheckIfOpen
-            # Visitor calls this
-            # If opening get ticket
-
-# When you 
-
-
-# Sudo code
-
-tickets = [0,1,2,3,4,5,6,7,8,9]
-
 class Garage():
+    """
+    Class to simulate a parking garage. When instantiating, one must provide
+    the total number of spaces in parking garage.
+    """
+    
     def __init__(self,total_spaces:int):
         self.total_spaces = total_spaces
         self.open_spots = total_spaces
@@ -37,11 +11,19 @@ class Garage():
         self.tickets = list()
 
     def currentVisitors(self):
+        """
+        Method to print out the current visitors and their payment status
+        """
         for visitor, payment_status in self.visitors.items():
             print(visitor, payment_status)
         return
     
     def takeTicket(self,visitor:str,show_text:bool=True):
+        """
+        Method to add a visitor to the parking garage. One must provide the visitor's name
+        when doing this. There is also an option to surpress the output text when a visitor
+        successfully enters the garage
+        """
         if self.open_spots == 0:
             print(f"Sorry {visitor}, no parking space-available")
             return
@@ -64,6 +46,10 @@ class Garage():
         return
 
     def payTicket(self, visitor:str):
+        """
+        Method to pay for a visitors parking ticket. One must provide the visitor's name. 
+        This must be done prior to leaving garage.
+        """
         if not isinstance(visitor,str) or not visitor:
             print("Visitor's name must be a non-empty string")
             return
@@ -107,6 +93,9 @@ class Garage():
         return
 
     def leaveGarage(self, visitor:str):
+        """
+        Method for vistor to leave garage. One must provide the visitor's name. 
+        """
         if not isinstance(visitor,str) or not visitor:
             print("Visitor's name must be a non-empty string")
             return
@@ -129,6 +118,9 @@ class Garage():
         return
     
     def moneyMade(self):
+        """
+        Method to print the amount of money made since instantiating the garage.
+        """
         total = 0
         for _,val in self.tickets:
             total += val
@@ -136,6 +128,10 @@ class Garage():
         return total
     
     def callManager(self,visitor:str):
+        """
+        Method to talk to manager. Can be called when visitor has issue with price of
+        parking ticket. Visitors name must be provided when calling method.
+        """
         # Please explain why ypu have an issue with our pricing scheme.
         # print(hmmmm)
         # All other customers pay $5, we would appreciate it if you did to
@@ -197,3 +193,4 @@ my_garage.takeTicket("mark")
 my_garage.callManager("mark")
 my_garage.currentVisitors()
 my_garage.moneyMade()
+
