@@ -15,7 +15,7 @@ class Garage():
         Method to print out the current visitors and their payment status
         """
         if len(self.visitors) == 0:
-            print("There are no visitors turning off systems.")
+            print("There are no visitors.")
             return
         length = 7
         for visitor in self.visitors.keys(): 
@@ -53,7 +53,7 @@ class Garage():
         self.open_spots -= 1
         if show_text:
             print(f"Welcome to the garage {visitor}, enjoy your time!")
-            print("Make sure to pay for your ticket with '.payTicket()' before you leave")
+            print("Make sure to pay for your ticket with 'pay' command before you leave")
         return
 
     def payTicket(self, visitor:str):
@@ -67,7 +67,7 @@ class Garage():
 
         visitor = visitor.strip().lower()
         if visitor not in self.visitors:
-            print("Hey don't you need to pay! You are not in the garage!")
+            print("Hey you don't need to pay! You are not in the garage!")
             return
 
         if self.visitors[visitor] == True:
@@ -88,11 +88,11 @@ class Garage():
                 print("You have entered the incorrect amount.")
 
                 if times_refused >= 1:
-                    print("You clearly can't be reasoned with, if you would like to speak to my manager, enter 'pay later', then call the manager'.callManager()' method")
+                    print("You clearly can't be reasoned with, if you would like to speak to my manager, enter 'pay later', then enter 'talk to manager")
                 continue    
             
             
-            print("Thank you for the payment! Leave garage with '.leaveGarage()' ")
+            print("Thank you for the payment! When ready, please leave with the 'leave' command ")
             break
         
         self.visitors[visitor] = True
@@ -118,7 +118,7 @@ class Garage():
 
         
         if self.visitors[visitor] == False:
-            print("You have not payed yet please pay with '.payTicket()' ")
+            print("You have not payed yet please pay with the 'pay' command")
             return
 
 
@@ -135,7 +135,7 @@ class Garage():
         total = 0
         for _,val in self.tickets:
             total += val
-        print(total)
+        print("$"+str(int(total)))
         return total
     
     def callManager(self,visitor:str):
@@ -148,6 +148,10 @@ class Garage():
         # All other customers pay $5, we would appreciate it if you did to
         # does that work for you. Please enter "yes" if it does
         # if it does, do standard pay for ticket
+        if visitor not in self.visitors:
+            print("You are not currently in garage. Enter garage to talk to manager")
+            return
+        
         print("Ok, please explain why you have an issue with our pricing")
         issue = input()
         print("hmmmmmmmmmmmm")
@@ -156,7 +160,7 @@ class Garage():
         response = input().strip().lower()
         ticket_val = 5
         if response == "yes":
-            print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the '.leaveGarage()' method")
+            print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the 'leave' command")
             self.visitors[visitor] = True
             self.tickets.append((visitor,ticket_val)) 
             return
@@ -170,7 +174,7 @@ class Garage():
             print("Enter 'yes' if you are ok with that price")
             response = input().strip().lower()
             if response == "yes":
-                print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the '.leaveGarage()' method")
+                print("Thank you for paying. Hope you have a good day. When you are ready, please leave with the 'leave' command")
                 self.visitors[visitor] = True
                 self.tickets.append((visitor,ticket_val)) 
                 return
@@ -179,3 +183,112 @@ class Garage():
         self.visitors[visitor] = True
         self.tickets.append((visitor,0)) 
         return
+
+def create_garage():
+    def print_instructions():
+        print()
+        print("'enter'")
+        print("command to enter garage")
+        print()
+        print("'pay'")
+        print("pay for ticket, must be done after entering")
+        print()
+        print("'leave'")
+        print("leave garage")
+        print()
+        print("'commands'")
+        print("repeats these commands")
+        print()
+        return
+    
+    
+    print("Thanks for opening the garage!")
+    while True:
+        print("How many parking spots do you want in your garage?")
+        spots = input()
+        try:
+            spots = int(spots)
+        except:
+            print("Please enter an integer above zero")
+            continue
+
+        if spots <= 0:
+            print("Please enter an integer above zero")
+            continue
+
+        break
+
+    garage = Garage(spots)
+    print("Welcome to this garage")
+    print("The following commands are ones for the general public....")
+    print_instructions()
+
+    print("enter any character to print the garage owner only commands")
+    input()
+
+    print("the following commands are just for the garage owner....")
+    print()
+    print("'list current visitors'")
+    print("shows all current visitors in garage and their payment status")
+    print()
+    print("'revenue'")
+    print("prints out total renvue made thus far")
+    print()
+    print("'shut down'")
+    print("shuts down garage")
+    print()
+    print("Be aware, there is an option to speak to manager, but this is not advertised to guests unless needed")
+    print()
+
+
+    print("enter any character to print a bunch of empty lines and hide manager commands")
+    input()
+    for _ in range(50):
+        print()
+    
+    while True:
+        print()
+        print("What would you like to do?")
+        response = input().strip().lower()
+        
+        if response == "enter":
+            print("What is your name?")
+            name = input().strip().lower()
+            garage.takeTicket(name)
+
+        elif response == "pay":
+            print("What is your name?")
+            name = input().strip().lower()
+            garage.payTicket(name)
+
+        elif response == "leave":
+            print("What is your name")
+            name = input().strip().lower()
+            garage.leaveGarage(name)
+
+        elif response == "talk to manager":
+            print("What is your name")
+            name = input().strip().lower()
+            garage.callManager(name)
+
+        elif response == "list current visitors":
+            garage.currentVisitors()
+        
+        elif response == "revenue":
+            garage.moneyMade()
+
+        elif response == "shut down":
+            print("Garage is being shut down")
+            break
+        
+        elif response == "commands":
+            print_instructions()
+        
+        else:
+            print("That was not a valid command. Please type 'commands' to see a list of valid commands")
+        
+    return
+
+
+if __name__ == "__main__":
+    create_garage()
